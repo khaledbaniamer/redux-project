@@ -1,0 +1,70 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../redux/itemSlice";
+
+
+const AddItem = ()=>{
+    const [itemData , setItemData] = useState({name:"" , description:""});
+
+    const handleChange = (e)=>{
+        e.preventDefault()
+        const value = e.target.value;
+        setItemData({
+          ...itemData,
+          [e.target.name]: value
+        })
+    }
+    const dispatch = useDispatch();
+    const handleSubmit=(e)=>{
+        e.preventDefault()
+        const value = e.target.value;
+        setItemData({
+            ...itemData,
+        })
+        // console.log(itemData)
+        dispatch(addItem(itemData));
+    }
+
+  
+
+
+    return(
+    <div className="container m-5 p-5" >
+    <form onSubmit={handleSubmit}>
+        <h3>Add New Item</h3>
+            <div className="form-outline mb-4">
+                <label className="form-label" >Name</label>
+                <input
+                 type="text" 
+                 className="form-control" 
+                 value={itemData.name}
+                 name="name"
+                 onChange={handleChange}
+                 />
+            </div>
+
+{/* 
+            <div className="form-outline mb-4">
+                <label className="form-label" >Image</label>
+                <input type="file" className="form-control" />
+            </div> */}
+
+            <div className="form-outline mb-4">
+                <label className="form-label" >Description</label>
+                <textarea
+                 
+                 className="form-control" 
+                 value={itemData.description}
+                 onChange={handleChange}
+                 name="description"
+                 />
+            </div>
+
+
+            <button type="submit" className="btn btn-primary btn-block mb-4">Add</button>
+    </form>
+    </div>
+    )
+}
+
+export default AddItem;
