@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Navigate, useNavigate } from "react-router-dom";
+import axios from 'axios'
 import Swal from 'sweetalert2';
 
 
@@ -17,30 +17,26 @@ export const getItems = createAsyncThunk(
 export const addItem = createAsyncThunk(
     'item/addItem',
     async (item , thunkAPI)=>{
-        console.log(item);
-        const response = await fetch('http://127.0.0.1:8000/api/add_item', {
-            method:'POST',
-            headers:{'Content-Type': 'application/json'},
-            body:JSON.stringify(item),
-        })
-        if(response.ok){
+ 
+        const response = await axios.post('http://127.0.0.1:8000/api/add_item',item);
+        
+        if(response.status ==200){
             Swal.fire({
                 title: "Item",
                 text: "Has been Added Successfully",
                 type: "success"
-            }).then(function() {
-                window.location = "add";
             });
-        }else{
-
         }
+        return response.data;
+
+
     }
 );
 
 export const updateItem = createAsyncThunk(
     'item/updateItem',
     async (args)=>{
-        // console.log(args)
+       
         const id = args.id;
         const response =await fetch(`http://127.0.0.1:8000/api/update_item/${id}`,{
             method:'POST',
@@ -53,12 +49,10 @@ export const updateItem = createAsyncThunk(
                 title: "Item",
                 text: "Has been updated Successfully",
                 type: "success"
-            }).then(function() {
-                window.location = `/update/${id}`;
             });
-        }else{
-
         }
+        const res = response.json();
+        return res;
     }
 );
 
@@ -76,12 +70,10 @@ export const deleteItem = createAsyncThunk(
                 title: "Item",
                 text: "Has been deleted Successfully",
                 type: "success"
-            }).then(function() {
-                window.location = `/main`;
             });
-        }else{
-
         }
+        const res = response.json();
+        return res;
         
     }
 )
@@ -108,6 +100,7 @@ const itemSlice = createSlice({
 
         [addItem.fulfilled]:(state , action)=>{
             state.status = 'success send data';
+            state.items.push(action.payload);
             
 
         },
@@ -123,8 +116,12 @@ const itemSlice = createSlice({
         //update item in api
         [updateItem.fulfilled]:(state , action)=>{
             state.status = 'success update data';
+            const {id} = action.payload;
+            const item = state.items.find((item)=>item.id == id);
+            item.name = action.payload.name;
+            item.description = action.payload.description;
+            item.image = action.payload.image;
             
-
         },
         [updateItem.pending]:(state  )=>{
             state.status = 'pending update data';
@@ -132,6 +129,22 @@ const itemSlice = createSlice({
         },
         [updateItem.rejected]:(state )=>{
             state.status = 'rejected update data';
+        },
+
+
+        //delete item in api
+        [deleteItem.fulfilled]:(state , action)=>{
+            state.status = 'success delete data';
+            const {id} = action.payload;
+             state.items = state.items.filter((item)=>item.id != id);
+            
+        },
+        [deleteItem.pending]:(state  )=>{
+            state.status = 'pending delete data';
+            
+        },
+        [deleteItem.rejected]:(state )=>{
+            state.status = 'rejected delete data';
         },
 
         

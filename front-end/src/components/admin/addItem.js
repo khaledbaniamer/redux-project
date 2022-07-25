@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addItem } from "../../redux/itemSlice";
 
 
 const AddItem = ()=>{
-    const [itemData , setItemData] = useState({name:"" , description:""});
-
+    const [itemData , setItemData] = useState({name:"" , description:"" , image:null});
+    let navigate = useNavigate();
     const handleChange = (e)=>{
         e.preventDefault()
         const value = e.target.value;
@@ -14,15 +15,33 @@ const AddItem = ()=>{
           [e.target.name]: value
         })
     }
+
+    const handleChangeImage=(e)=>{
+        setItemData(
+           { ...itemData,
+            image: e.target.files[0]}
+        )
+    }
+
     const dispatch = useDispatch();
     const handleSubmit=(e)=>{
+
+
+
         e.preventDefault()
         const value = e.target.value;
         setItemData({
             ...itemData,
         })
+        
+        const formData = new FormData();
+        formData.append('image', itemData.image)
+        formData.append('name', itemData.name)
+        formData.append('description', itemData.description)
         // console.log(itemData)
-        dispatch(addItem(itemData));
+        dispatch(addItem(formData));
+
+        navigate("/main", { replace: true });
     }
 
   
@@ -43,11 +62,17 @@ const AddItem = ()=>{
                  />
             </div>
 
-{/* 
+
             <div className="form-outline mb-4">
                 <label className="form-label" >Image</label>
-                <input type="file" className="form-control" />
-            </div> */}
+                <input 
+                    type="file" 
+                    className="form-control" 
+                    name="image" 
+                    onChange={handleChangeImage}
+                    multiple
+                />
+            </div>
 
             <div className="form-outline mb-4">
                 <label className="form-label" >Description</label>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { updateItem } from "../../redux/itemSlice";
 
 
@@ -8,17 +8,18 @@ const UpdateItem = ()=>{
     
     const dispatch = useDispatch();
     const {id} = useParams();
-    
+    let navigate = useNavigate();
     
     const allItems = useSelector(state=>state.item.items)
 
-    const [itemData , setItemData] = useState({name:"", description:""});
+    const [itemData , setItemData] = useState({name:"", description:"" , image:""});
     let obj = {}
     allItems.forEach(element => {
         if(element.id == id){
             obj['id'] = element.id;
             obj['name'] = element.name;
             obj['description'] = element.description;
+            obj['image'] = element.image;
             
         }
     });
@@ -45,13 +46,15 @@ const UpdateItem = ()=>{
             ...itemData,
             
         })
-        // console.log(itemData)
+        
         dispatch(updateItem(itemData));
+        navigate('/main' ,{replace:true})
     }
 
-
+    console.log(itemData)
     return(
     <div className="container m-5 p-5" >
+
     <form onSubmit={handleSubmit}>
         <h3>Update Item</h3>
             <div className="form-outline mb-4">
@@ -80,6 +83,11 @@ const UpdateItem = ()=>{
                 onChange={handleChange}
                 />
             </div>
+
+
+    <div className="my-4">
+        <img src={ "http://localhost:8000/uploads/"+ itemData.image } width="120px" />
+    </div>
 
 
             <button type="submit" className="btn btn-primary btn-block mb-4">Update</button>

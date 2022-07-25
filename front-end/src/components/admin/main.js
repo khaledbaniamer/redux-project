@@ -1,20 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { deleteItem } from "../../redux/itemSlice";
 
 
 const Main = ()=>{
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const allItems = useSelector((state)=>state.item.items);
     const showItems = allItems.map(item=>{
     return(
     <tr key={item.id}>
-        <th scope="row">{item.id}</th>
-        <td>{item.name}</td>
-        <td>{item.description}</td>
-        <td>
+        <th className="p-3 text-center align-middle">{item.id}</th>
+        <td className="p-3 text-center align-middle"><img src={ "http://localhost:8000/uploads/" + item.image } width="120px" /></td>
+        <td className="p-3 text-center align-middle">{item.name}</td>
+        <td className="p-3 text-center align-middle">{item.description}</td>
+        <td className="p-3 text-center align-middle">
             <Link to={`/update/${item.id}`}  className="btn btn-primary mx-2">Update</Link>
-            <Link onClick={()=>dispatch(deleteItem(item.id))} to='/main' className="btn btn-danger mx-2">Delete</Link>
+            <Link onClick={()=>{
+                dispatch(deleteItem(item.id))
+                navigate('/main' , {replace:true})
+            }
+            } to='/main' className="btn btn-danger mx-2">Delete</Link>
         </td>
     </tr>
     )
@@ -26,10 +32,11 @@ const Main = ()=>{
     <table className="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Action</th>
+                <th className="p-3 text-center">#</th>
+                <th className="p-3 text-center">Photo</th>
+                <th className="p-3 text-center">Name</th>
+                <th className="p-3 text-center">Description</th>
+                <th className="p-3 text-center">Action</th>
             </tr>
         </thead>
         <tbody>
