@@ -10,11 +10,11 @@ const allItems = useSelector((state)=>state.item.items);
 
 const showItems = allItems.map((item)=>{
     return(
-    <div className="card col-3 p-0 mx-5 my-3">
+    <div className="card col-3 p-0 mx-5 my-3" key={item.id}>
         <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
             <img src={ "http://localhost:8000/uploads/" + item.image } className="img-fluid"/>
             <NavLink to='/'>
-            <div className="mask" style={{"background-color": "rgba(251, 251, 251, 0.15)"}}></div>
+            <div className="mask" style={{"backgroundColor": "rgba(251, 251, 251, 0.15)"}}></div>
             </NavLink>
         </div>
         <div className="card-body">

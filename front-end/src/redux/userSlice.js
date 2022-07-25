@@ -20,9 +20,8 @@ const userSlice = createSlice({
                     title: "Wrong",
                     text: "incorrect Email or Password",
                     type: "success"
-                }).then(function() {
-                    window.location = `/login`;
                 });
+                
             }
         },
         logout:(state)=>{

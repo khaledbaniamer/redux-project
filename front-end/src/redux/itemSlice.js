@@ -28,8 +28,6 @@ export const addItem = createAsyncThunk(
             });
         }
         return response.data;
-
-
     }
 );
 

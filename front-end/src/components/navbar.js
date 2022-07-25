@@ -32,7 +32,7 @@ const Navbar = ()=>{
                     )}
                     {status && (
                     <li className="nav-item">
-                        <NavLink className="nav-link" onClick={handleLogout} to="/">Logout</NavLink>
+                        <NavLink className="nav-link" onClick={handleLogout} to="/home">Logout</NavLink>
                     </li>
     
                     )}

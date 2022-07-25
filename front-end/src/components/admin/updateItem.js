@@ -14,6 +14,7 @@ const UpdateItem = ()=>{
 
     const [itemData , setItemData] = useState({name:"", description:"" , image:""});
     let obj = {}
+    
     allItems.forEach(element => {
         if(element.id == id){
             obj['id'] = element.id;

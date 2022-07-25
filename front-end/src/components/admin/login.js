@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { login } from '../../redux/userSlice';
@@ -7,7 +7,7 @@ import './login.css'
 const Login =()=>{
     
     let navigate = useNavigate();
-    // const user = useSelector(state=>state);
+    const user = useSelector(state=>state.user.isLogged);
     // console.log(user);
     const [userData , setUserData] =useState({email:"" , password:""}) 
     const dispatch = useDispatch();
@@ -21,18 +21,21 @@ const Login =()=>{
         })
     }
     const handleSubmit=(e)=>{
-
-
-
         e.preventDefault()
         const value = e.target.value;
         setUserData({
             ...userData,
         })
-        dispatch(login(userData))
-
-        navigate("/main", { replace: true });
+        dispatch(login(userData));   
     }
+    useEffect(() => {
+        if(user){
+
+            navigate("/main", { replace: true });
+        }else{
+            navigate("/login", { replace: true });
+        }
+    }, [user])
     
 
     return(
