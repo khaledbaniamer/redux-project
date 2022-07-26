@@ -20,7 +20,7 @@ const showItems = allItems.map((item)=>{
         <div className="card-body">
             <h5 className="card-title">{item.name}</h5>
             <p className="card-text">{item.description}</p>
-            <NavLink to='/' className="btn btn-primary">Button</NavLink>
+            <NavLink to='/' className="btn btn-primary">Red More</NavLink>
         </div>
     </div>
     )
