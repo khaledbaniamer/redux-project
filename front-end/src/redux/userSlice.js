@@ -8,6 +8,7 @@ const userSlice = createSlice({
     initialState:{email:"khaled@mail.com" , password:"123" , isLogged:false},
     reducers:{
         login:(state , action)=>{
+            
             if(action.payload.email === state.email &&action.payload.password == state.password){
                 Swal.fire({
                     title: "Login",
